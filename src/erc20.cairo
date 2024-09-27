@@ -3,6 +3,7 @@ mod cairo_token {
 
     use starknet::ContractAddress;
     use starknet::get_caller_address;
+    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess, StorageMapReadAccess, StorageMapWriteAccess};
 
     #[storage]
     struct Storage {
@@ -11,8 +12,8 @@ mod cairo_token {
         symbol: felt252,
         total_supply: u256,
         decimal: u8,
-        balances: LegacyMap::<ContractAddress, u256>,
-        allowances: LegacyMap::<(ContractAddress, ContractAddress), u256>, 
+        balances: Map::<ContractAddress, u256>,
+        allowances: Map::<(ContractAddress, ContractAddress), u256>, 
     }
 
     #[constructor]
@@ -24,7 +25,7 @@ mod cairo_token {
 
     }
 
-    #[external(v0)]
+    #[abi(per_item)]
     #[generate_trait]
     impl CairoTokenTraitImpl of CairoTokenTrait {
 
